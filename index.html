@@ -67,7 +67,7 @@
       transform: translateY(0);
     }
 
-    /* Locked Screen Styles */
+    /* 1. Locked Screen Styles */
     .lock-card {
       background: rgba(255, 255, 255, 0.07);
       backdrop-filter: blur(16px);
@@ -150,7 +150,49 @@
       font-weight: 600;
     }
 
-    /* Unlocked Main Content Styles */
+    /* 2. Lock Click Interactive Screen */
+    .padlock-container {
+      text-align: center;
+      cursor: pointer;
+      user-select: none;
+      padding: 30px 0;
+    }
+
+    .padlock-svg {
+      width: 120px;
+      height: 140px;
+      margin: 0 auto 20px auto;
+      filter: drop-shadow(0 0 20px rgba(255, 193, 7, 0.6));
+      transition: transform 0.3s ease;
+    }
+
+    .padlock-container:hover .padlock-svg {
+      transform: scale(1.08);
+    }
+
+    /* CSS Animation cho Còng Khóa khi bật mở */
+    .shackle {
+      transform-origin: 35px 45px;
+      transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .padlock-svg.unlocked .shackle {
+      transform: translateY(-22px) rotate(-25deg);
+    }
+
+    .unlock-hint {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #ffeb3b;
+      animation: bounce 1.5s infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    /* 3. Unlocked Main Content Styles */
     .unlocked-card {
       background: var(--card-bg);
       color: var(--text-color);
@@ -290,7 +332,7 @@
 
   <div class="container">
     
-    <!-- SCREEN 1: TIME LOCK COUNTDOWN (BẢO MẬT BÍ MẬT HOÀN TOÀN) -->
+    <!-- SCREEN 1: TIME LOCK COUNTDOWN -->
     <div id="lock-screen" class="screen active">
       <div class="lock-card">
         <div class="gift-icon">🎁</div>
@@ -321,7 +363,32 @@
       </div>
     </div>
 
-    <!-- SCREEN 2: UNLOCKED CONTENT (NỘI DUNG CHỈ XUẤT HIỆN KHI HẾT GIỜ HOẶC DÙNG #preview) -->
+    <!-- SCREEN 2: INTERACTIVE PADLOCK SCREEN (HIỆN RA KHI HẾT GIỜ HẶC #PREVIEW) -->
+    <div id="padlock-screen" class="screen">
+      <div class="lock-card">
+        <div class="padlock-container" onclick="triggerUnlockAnimation()">
+          <!-- SVG Ổ Khóa Chuyên Nghiệp -->
+          <svg class="padlock-svg" id="padlock-icon" viewBox="0 0 100 120">
+            <!-- Còng khóa -->
+            <path class="shackle" d="M 30 55 V 35 A 20 20 0 0 1 70 35 V 55" fill="none" stroke="#ffc107" stroke-width="10" stroke-linecap="round"/>
+            <!-- Thân khóa -->
+            <rect x="15" y="50" width="70" height="60" rx="12" fill="url(#gold-grad)" stroke="#ffa000" stroke-width="3"/>
+            <!-- Lỗ khóa -->
+            <circle cx="50" cy="75" r="6" fill="#0f172a"/>
+            <polygon points="46,75 54,75 52,90 48,90" fill="#0f172a"/>
+            <defs>
+              <linearGradient id="gold-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#ffe082" />
+                <stop offset="100%" stop-color="#ffb300" />
+              </linearGradient>
+            </defs>
+          </svg>
+          <div class="unlock-hint">✨ Đã tới giờ! Chạm vào ổ khóa để mở quà ✨</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCREEN 3: UNLOCKED CONTENT (HIỆN NỘI DUNG SAU KHÍ CLICK Ổ KHÓA) -->
     <div id="unlocked-screen" class="screen">
       <div class="unlocked-card">
         <h1 class="main-title">Chúc Mừng Ngày Nhà Giáo Việt Nam</h1>
@@ -377,25 +444,53 @@
       return window.location.hash.toLowerCase() === '#preview';
     }
 
-    function unlockContent() {
+    // Chuyển từ Màn hình Đếm ngược sang Màn hình Ổ Khóa Chờ Click
+    function showPadlockScreen() {
       const lockScreen = document.getElementById('lock-screen');
-      const unlockedScreen = document.getElementById('unlocked-screen');
+      const padlockScreen = document.getElementById('padlock-screen');
       
-      lockScreen.classList.remove('active');
-      setTimeout(() => {
-        lockScreen.style.display = 'none';
-        unlockedScreen.style.display = 'block';
+      if (lockScreen.classList.contains('active')) {
+        lockScreen.classList.remove('active');
         setTimeout(() => {
-          unlockedScreen.classList.add('active');
-          initFireworks();
-        }, 50);
-      }, 500);
+          lockScreen.style.display = 'none';
+          padlockScreen.style.display = 'block';
+          setTimeout(() => padlockScreen.classList.add('active'), 50);
+        }, 500);
+      }
+    }
+
+    let isUnlocking = false;
+
+    // Hoạt ảnh Mở Khóa khi Click chuột vào Ổ Khóa
+    function triggerUnlockAnimation() {
+      if (isUnlocking) return;
+      isUnlocking = true;
+
+      const padlockIcon = document.getElementById('padlock-icon');
+      const padlockScreen = document.getElementById('padlock-screen');
+      const unlockedScreen = document.getElementById('unlocked-screen');
+
+      // 1. Bật còng khóa lên
+      padlockIcon.classList.add('unlocked');
+
+      // 2. Bắn pháo hoa ăn mừng
+      initFireworks();
+
+      // 3. Mờ dần màn hình ổ khóa và hiện bức thư
+      setTimeout(() => {
+        padlockScreen.classList.remove('active');
+        setTimeout(() => {
+          padlockScreen.style.display = 'none';
+          unlockedScreen.style.display = 'block';
+          setTimeout(() => unlockedScreen.classList.add('active'), 50);
+        }, 600);
+      }, 700);
     }
 
     function updateCountdown() {
       if (isPreviewMode()) {
         document.getElementById('preview-tag').style.display = 'inline-block';
-        unlockContent();
+        showPadlockScreen();
         return true;
       }
 
@@ -403,7 +498,7 @@
       const distance = targetDate.getTime() - now;
 
       if (distance <= 0) {
-        unlockContent();
+        showPadlockScreen();
         return true;
       }
 
@@ -422,7 +517,7 @@
 
     window.addEventListener('hashchange', () => {
       if (isPreviewMode()) {
-        unlockContent();
+        showPadlockScreen();
       }
     });
 
