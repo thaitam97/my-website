@@ -170,7 +170,6 @@
       transform: scale(1.08);
     }
 
-    /* CSS Animation cho Còng Khóa khi bật mở */
     .shackle {
       transform-origin: 35px 45px;
       transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -200,6 +199,8 @@
       padding: 40px 30px;
       box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5);
       text-align: center;
+      max-height: 90vh;
+      overflow-y: auto;
     }
 
     .main-title {
@@ -212,7 +213,7 @@
     .sub-title {
       font-size: 1rem;
       color: #64748b;
-      margin-bottom: 30px;
+      margin-bottom: 25px;
       font-weight: 500;
     }
 
@@ -220,83 +221,26 @@
       background: #fff5f8;
       border-left: 4px solid var(--primary-color);
       border-radius: 12px;
-      padding: 25px;
+      padding: 25px 30px;
       text-align: left;
-      line-height: 1.8;
+      line-height: 1.85;
       font-size: 1rem;
       color: #334155;
-      margin-bottom: 35px;
       box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.02);
     }
 
     .letter-box p {
-      margin-bottom: 12px;
+      margin-bottom: 14px;
+      text-align: justify;
     }
 
-    .letter-box p:last-child {
+    .letter-box p.signature {
+      margin-top: 20px;
       margin-bottom: 0;
       text-align: right;
-      font-weight: 600;
-      color: var(--secondary-color);
-    }
-
-    /* Fortune / Quẻ Lời Chúc Section */
-    .fortune-section {
-      background: rgba(111, 66, 193, 0.05);
-      border: 1px dashed var(--secondary-color);
-      border-radius: 20px;
-      padding: 25px 20px;
-    }
-
-    .fortune-title {
-      font-size: 1.2rem;
       font-weight: 700;
       color: var(--secondary-color);
-      margin-bottom: 15px;
-    }
-
-    .fortune-btn {
-      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-      color: #fff;
-      border: none;
-      padding: 12px 28px;
-      font-size: 0.95rem;
-      font-weight: 600;
-      border-radius: 30px;
-      cursor: pointer;
-      box-shadow: 0 8px 20px rgba(214, 51, 132, 0.3);
-      transition: all 0.3s ease;
-      font-family: 'Montserrat', sans-serif;
-    }
-
-    .fortune-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 12px 25px rgba(214, 51, 132, 0.4);
-    }
-
-    .fortune-btn:active {
-      transform: translateY(0);
-    }
-
-    .fortune-result {
-      margin-top: 20px;
       font-size: 1.05rem;
-      font-weight: 600;
-      color: #0f172a;
-      min-height: 50px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 12px;
-      background: #fff;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-      opacity: 0;
-      transition: opacity 0.5s ease;
-    }
-
-    .fortune-result.show {
-      opacity: 1;
     }
 
     /* Responsive Design */
@@ -308,7 +252,7 @@
         padding: 30px 15px;
       }
       .unlocked-card {
-        padding: 30px 18px;
+        padding: 25px 15px;
       }
       .main-title {
         font-size: 2.2rem;
@@ -363,17 +307,13 @@
       </div>
     </div>
 
-    <!-- SCREEN 2: INTERACTIVE PADLOCK SCREEN (HIỆN RA KHI HẾT GIỜ HẶC #PREVIEW) -->
+    <!-- SCREEN 2: INTERACTIVE PADLOCK SCREEN -->
     <div id="padlock-screen" class="screen">
       <div class="lock-card">
         <div class="padlock-container" onclick="triggerUnlockAnimation()">
-          <!-- SVG Ổ Khóa Chuyên Nghiệp -->
           <svg class="padlock-svg" id="padlock-icon" viewBox="0 0 100 120">
-            <!-- Còng khóa -->
             <path class="shackle" d="M 30 55 V 35 A 20 20 0 0 1 70 35 V 55" fill="none" stroke="#ffc107" stroke-width="10" stroke-linecap="round"/>
-            <!-- Thân khóa -->
             <rect x="15" y="50" width="70" height="60" rx="12" fill="url(#gold-grad)" stroke="#ffa000" stroke-width="3"/>
-            <!-- Lỗ khóa -->
             <circle cx="50" cy="75" r="6" fill="#0f172a"/>
             <polygon points="46,75 54,75 52,90 48,90" fill="#0f172a"/>
             <defs>
@@ -388,25 +328,19 @@
       </div>
     </div>
 
-    <!-- SCREEN 3: UNLOCKED CONTENT (HIỆN NỘI DUNG SAU KHÍ CLICK Ổ KHÓA) -->
+    <!-- SCREEN 3: UNLOCKED CONTENT (BỨC THƯ ĐÃ ĐƯỢC MỞ RỘNG TRANG TRỌNG) -->
     <div id="unlocked-screen" class="screen">
       <div class="unlocked-card">
         <h1 class="main-title">Chúc Mừng Ngày Nhà Giáo Việt Nam</h1>
         <p class="sub-title">Tri ân Cô Nguyễn Thị Kim Yến - Người lái đò thầm lặng</p>
 
-        <!-- Lời chúc / Bức thư -->
         <div class="letter-box">
-          <p>Kính gửi Cô Nguyễn Thị Kim Yến,</p>
-          <p>Nhân ngày 20/11, em xin gửi tới Cô lời tri ân chân thành và sâu sắc nhất. Cảm ơn Cô đã luôn tận tụy, kiên nhẫn dìu dắt và truyền cho chúng em ngọn lửa đam mê tri thức.</p>
-          <p>Kính chúc Cô luôn dồi dào sức khỏe, luôn vui tươi, hạnh phúc và gặt hái được thật nhiều thành công hơn nữa trong sự nghiệp trồng người cao quý!</p>
-          <p>— Học sinh kính tặng —</p>
-        </div>
-
-        <!-- Tính năng Bốc quẻ / Lời chúc may mắn -->
-        <div class="fortune-section">
-          <div class="fortune-title">✨ Bốc Quẻ Lời Chúc May Mắn ✨</div>
-          <button class="fortune-btn" onclick="drawFortune()">Rút Quẻ Ngay</button>
-          <div class="fortune-result" id="fortune-display">Hãy nhấn nút để nhận thông điệp ý nghĩa cho ngày hôm nay!</div>
+          <p>Kính gửi Cô Nguyễn Thị Kim Yến kính yêu,</p>
+          <p>Tháng mười một lại về mang theo những cơn gió se lạnh đầu đông và cũng là lúc triệu trái tim học trò hướng về ngày Nhà giáo Việt Nam 20/11 – ngày tôn vinh những người mang sứ mệnh gieo mầm tri thức cao quý. Nhân dịp đặc biệt này, chúng em xin được gửi đến Cô những tình cảm chân thành, lòng biết ơn sâu sắc và lời chúc mừng tốt đẹp nhất.</p>
+          <p>Dưới mái trường thân yêu này, mỗi bài giảng của Cô không chỉ truyền tải lượng kiến thức khoa học bổ ích mà còn chứa đựng cả tâm huyết, sự kiên nhẫn và tình yêu thương bao la. Có những buổi học miệt mài, có những trăn trở lo lắng cho sự tiến bộ của học trò, Cô vẫn luôn ở đó, tận tụy dìu dắt chúng em từng bước vượt qua mọi khó khăn trên con đường chinh phục tri thức.</p>
+          <p>Chúng em hiểu rằng, đằng sau sự nghiêm khắc đôi khi là mong muốn chúng em nên người, và đằng sau những lời động viên là cả một bầu trời sự quan tâm ấm áp. Cảm ơn Cô đã luôn là ngọn hải đăng soi đường, truyền cảm hứng mạnh mẽ để chúng em vững tin bước vào tương lai.</p>
+          <p>Nhân ngày 20/11, chúng em kính chúc Cô luôn luôn dồi dào sức khỏe, tràn ngập niềm vui trong cuộc sống và giữ mãi ngọn lửa nhiệt huyết trên bục giảng. Chúc Cô luôn gặt hái được thật nhiều thành công hơn nữa trong sự nghiệp trồng người cao cả.</p>
+          <p class="signature">— Tập thể học sinh kính tặng Cô —</p>
         </div>
       </div>
     </div>
@@ -430,21 +364,10 @@
 
     const targetDate = getTargetDate();
 
-    const fortunes = [
-      "🌸 Chúc Cô Nguyễn Thị Kim Yến một ngày 20/11 tràn ngập hoa, quà và những nụ cười rạng rỡ!",
-      "⭐ Kính chúc Cô luôn dồi dào sức khỏe để tiếp tục dìu dắt các thế hệ học trò nên người!",
-      "📚 Nụ cười và sự tận tâm của Cô là động lực lớn giúp chúng em vững bước mỗi ngày.",
-      "🍀 Chúc Cô luôn gặp nhiều may mắn, bình an và hạnh phúc trong cuộc sống!",
-      "💖 Tri thức Cô trao đi là hành trang quý giá theo chúng em suốt chặng đường dài.",
-      "🎉 Cảm ơn Cô vì sự kiên nhẫn và tình yêu thương bao la dành cho chúng em!",
-      "✨ Chúc Cô luôn giữ trọn vẹn ngọn lửa nhiệt huyết và đam mê với bục giảng thân thương!"
-    ];
-
     function isPreviewMode() {
       return window.location.hash.toLowerCase() === '#preview';
     }
 
-    // Chuyển từ Màn hình Đếm ngược sang Màn hình Ổ Khóa Chờ Click
     function showPadlockScreen() {
       const lockScreen = document.getElementById('lock-screen');
       const padlockScreen = document.getElementById('padlock-screen');
@@ -461,7 +384,6 @@
 
     let isUnlocking = false;
 
-    // Hoạt ảnh Mở Khóa khi Click chuột vào Ổ Khóa
     function triggerUnlockAnimation() {
       if (isUnlocking) return;
       isUnlocking = true;
@@ -470,13 +392,9 @@
       const padlockScreen = document.getElementById('padlock-screen');
       const unlockedScreen = document.getElementById('unlocked-screen');
 
-      // 1. Bật còng khóa lên
       padlockIcon.classList.add('unlocked');
-
-      // 2. Bắn pháo hoa ăn mừng
       initFireworks();
 
-      // 3. Mờ dần màn hình ổ khóa và hiện bức thư
       setTimeout(() => {
         padlockScreen.classList.remove('active');
         setTimeout(() => {
@@ -532,21 +450,7 @@
     }
 
     /* =========================================================
-       2. BỐC QUẺ LỜI CHÚC
-       ========================================================= */
-    function drawFortune() {
-      const display = document.getElementById('fortune-display');
-      display.classList.remove('show');
-      
-      setTimeout(() => {
-        const randomIndex = Math.floor(Math.random() * fortunes.length);
-        display.innerText = fortunes[randomIndex];
-        display.classList.add('show');
-      }, 200);
-    }
-
-    /* =========================================================
-       3. CANVAS ANIMATION (Cánh hoa rơi / Pháo hoa)
+       2. CANVAS ANIMATION (Cánh hoa rơi / Pháo hoa)
        ========================================================= */
     const canvas = document.getElementById('canvas-bg');
     const ctx = canvas.getContext('2d');
