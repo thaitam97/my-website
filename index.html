@@ -9,11 +9,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --primary-color: #d63384;
-      --secondary-color: #6f42c1;
-      --accent-color: #ffc107;
-      --bg-dark: #0f172a;
-      --card-bg: rgba(255, 255, 255, 0.94);
+      --primary-color: #ff3366;
+      --secondary-color: #7928ca;
+      --accent-color: #ffb800;
+      --bg-dark: #070b19;
       --text-color: #1e293b;
     }
 
@@ -26,7 +25,7 @@
     body {
       font-family: 'Montserrat', sans-serif;
       min-height: 100vh;
-      background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #31103f 100%);
+      background: linear-gradient(135deg, #070b19 0%, #120d2a 50%, #220835 100%);
       color: #fff;
       display: flex;
       justify-content: center;
@@ -67,22 +66,54 @@
       transform: translateY(0);
     }
 
-    /* 1. Locked Screen Styles */
+    /* =========================================================
+       LIQUID GLASS CARD EFFECT (HIỆU ỨNG KÍNH LỎNG CAO CẤP)
+       ========================================================= */
     .lock-card {
-      background: rgba(255, 255, 255, 0.07);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.18);
-      border-radius: 24px;
-      padding: 40px 20px;
+      position: relative;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.03));
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border-radius: 32px;
+      padding: 45px 30px;
       text-align: center;
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+      box-shadow: 
+        0 30px 60px rgba(0, 0, 0, 0.5),
+        inset 0 1px 0 0 rgba(255, 255, 255, 0.3),
+        inset 0 -1px 0 0 rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      overflow: hidden;
+    }
+
+    /* Vệt sáng bóng phản chiếu (Specular Highlight) */
+    .lock-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -50%;
+      width: 200%;
+      height: 100%;
+      background: linear-gradient(
+        to right,
+        transparent 0%,
+        rgba(255, 255, 255, 0.08) 50%,
+        transparent 100%
+      );
+      transform: rotate(25deg);
+      pointer-events: none;
+      animation: liquidShine 6s infinite linear;
+    }
+
+    @keyframes liquidShine {
+      0% { transform: translateY(-100%) rotate(25deg); }
+      100% { transform: translateY(100%) rotate(25deg); }
     }
 
     .gift-icon {
       font-size: 4rem;
       margin-bottom: 15px;
       animation: pulse 2s infinite ease-in-out;
+      filter: drop-shadow(0 0 15px rgba(255, 184, 0, 0.5));
     }
 
     @keyframes pulse {
@@ -91,10 +122,10 @@
     }
 
     .lock-title {
-      font-size: 1.8rem;
+      font-size: 2rem;
       font-weight: 700;
       margin-bottom: 10px;
-      background: linear-gradient(45deg, #ff758c, #ff7eb3, #ffc107);
+      background: linear-gradient(45deg, #ff758c, #ff7eb3, #ffb800);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
@@ -114,13 +145,16 @@
     }
 
     .time-box {
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.06);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 20px;
       padding: 15px 5px;
       display: flex;
       flex-direction: column;
       align-items: center;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
     }
 
     .time-val {
@@ -128,6 +162,7 @@
       font-weight: 700;
       color: #ffeb3b;
       font-variant-numeric: tabular-nums;
+      text-shadow: 0 0 10px rgba(255, 235, 59, 0.4);
     }
 
     .time-label {
@@ -142,32 +177,33 @@
       display: inline-block;
       margin-top: 15px;
       padding: 6px 16px;
-      background: rgba(255, 193, 7, 0.2);
-      border: 1px solid #ffc107;
-      color: #ffc107;
+      background: rgba(255, 184, 0, 0.15);
+      border: 1px solid rgba(255, 184, 0, 0.4);
+      color: #ffb800;
       border-radius: 20px;
       font-size: 0.8rem;
       font-weight: 600;
+      backdrop-filter: blur(5px);
     }
 
-    /* 2. Lock Click Interactive Screen */
+    /* 2. Interactive Padlock Screen */
     .padlock-container {
       text-align: center;
       cursor: pointer;
       user-select: none;
-      padding: 30px 0;
+      padding: 20px 0;
     }
 
     .padlock-svg {
-      width: 120px;
-      height: 140px;
+      width: 130px;
+      height: 150px;
       margin: 0 auto 20px auto;
-      filter: drop-shadow(0 0 20px rgba(255, 193, 7, 0.6));
-      transition: transform 0.3s ease;
+      filter: drop-shadow(0 0 25px rgba(255, 184, 0, 0.7));
+      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
 
     .padlock-container:hover .padlock-svg {
-      transform: scale(1.08);
+      transform: scale(1.1);
     }
 
     .shackle {
@@ -184,6 +220,7 @@
       font-weight: 600;
       color: #ffeb3b;
       animation: bounce 1.5s infinite;
+      text-shadow: 0 0 10px rgba(255, 235, 59, 0.5);
     }
 
     @keyframes bounce {
@@ -191,13 +228,18 @@
       50% { transform: translateY(-8px); }
     }
 
-    /* 3. Unlocked Main Content Styles */
+    /* 3. Unlocked Main Content Styles (Liquid Glass Card) */
     .unlocked-card {
-      background: var(--card-bg);
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0.85));
+      backdrop-filter: blur(30px);
+      -webkit-backdrop-filter: blur(30px);
       color: var(--text-color);
-      border-radius: 28px;
-      padding: 40px 30px;
-      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5);
+      border-radius: 32px;
+      padding: 45px 35px;
+      box-shadow: 
+        0 30px 70px rgba(0, 0, 0, 0.6),
+        inset 0 1px 0 0 rgba(255, 255, 255, 1);
+      border: 1px solid rgba(255, 255, 255, 0.8);
       text-align: center;
       max-height: 90vh;
       overflow-y: auto;
@@ -205,42 +247,44 @@
 
     .main-title {
       font-family: 'Dancing Script', cursive;
-      font-size: 2.8rem;
-      color: var(--primary-color);
+      font-size: 3rem;
+      color: #d63384;
       margin-bottom: 5px;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.05);
     }
 
     .sub-title {
-      font-size: 1rem;
+      font-size: 1.05rem;
       color: #64748b;
       margin-bottom: 25px;
-      font-weight: 500;
+      font-weight: 600;
     }
 
     .letter-box {
-      background: #fff5f8;
-      border-left: 4px solid var(--primary-color);
-      border-radius: 12px;
-      padding: 25px 30px;
+      background: rgba(255, 245, 248, 0.8);
+      border-left: 4px solid #d63384;
+      border-radius: 16px;
+      padding: 30px;
       text-align: left;
-      line-height: 1.85;
-      font-size: 1rem;
+      line-height: 1.9;
+      font-size: 1.02rem;
       color: #334155;
-      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.02);
+      box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.02);
+      border-top: 1px solid rgba(255, 255, 255, 0.6);
     }
 
     .letter-box p {
-      margin-bottom: 14px;
+      margin-bottom: 15px;
       text-align: justify;
     }
 
     .letter-box p.signature {
-      margin-top: 20px;
+      margin-top: 25px;
       margin-bottom: 0;
       text-align: right;
       font-weight: 700;
-      color: var(--secondary-color);
-      font-size: 1.05rem;
+      color: #7928ca;
+      font-size: 1.1rem;
     }
 
     /* Responsive Design */
@@ -249,13 +293,13 @@
         padding: 12px;
       }
       .lock-card {
-        padding: 30px 15px;
+        padding: 30px 18px;
       }
       .unlocked-card {
-        padding: 25px 15px;
+        padding: 25px 18px;
       }
       .main-title {
-        font-size: 2.2rem;
+        font-size: 2.3rem;
       }
       .time-val {
         font-size: 1.5rem;
@@ -303,7 +347,7 @@
         </div>
 
         <p style="font-size: 0.8rem; color: #94a3b8;">Thời gian mở khóa bí mật</p>
-        <div id="preview-tag" class="preview-badge" style="display: none;">Đang ở chế độ Xem Trước (#preview)</div>
+        <div id="preview-tag" class="preview-badge" style="display: none;">✨ Đang ở chế độ Xem Trước (#preview)</div>
       </div>
     </div>
 
@@ -312,10 +356,10 @@
       <div class="lock-card">
         <div class="padlock-container" onclick="triggerUnlockAnimation()">
           <svg class="padlock-svg" id="padlock-icon" viewBox="0 0 100 120">
-            <path class="shackle" d="M 30 55 V 35 A 20 20 0 0 1 70 35 V 55" fill="none" stroke="#ffc107" stroke-width="10" stroke-linecap="round"/>
+            <path class="shackle" d="M 30 55 V 35 A 20 20 0 0 1 70 35 V 55" fill="none" stroke="#ffb800" stroke-width="10" stroke-linecap="round"/>
             <rect x="15" y="50" width="70" height="60" rx="12" fill="url(#gold-grad)" stroke="#ffa000" stroke-width="3"/>
-            <circle cx="50" cy="75" r="6" fill="#0f172a"/>
-            <polygon points="46,75 54,75 52,90 48,90" fill="#0f172a"/>
+            <circle cx="50" cy="75" r="6" fill="#070b19"/>
+            <polygon points="46,75 54,75 52,90 48,90" fill="#070b19"/>
             <defs>
               <linearGradient id="gold-grad" x1="0%" y1="0%" x2="100%" y2="100%">
                 <stop offset="0%" stop-color="#ffe082" />
@@ -328,7 +372,7 @@
       </div>
     </div>
 
-    <!-- SCREEN 3: UNLOCKED CONTENT (BỨC THƯ ĐÃ ĐƯỢC MỞ RỘNG TRANG TRỌNG) -->
+    <!-- SCREEN 3: UNLOCKED CONTENT -->
     <div id="unlocked-screen" class="screen">
       <div class="unlocked-card">
         <h1 class="main-title">Chúc Mừng Ngày Nhà Giáo Việt Nam</h1>
