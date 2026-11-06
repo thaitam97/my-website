@@ -47,7 +47,7 @@
 
     .container {
       width: 100%;
-      max-width: 850px;
+      max-width: 900px;
       padding: 20px;
       z-index: 2;
       position: relative;
@@ -68,8 +68,8 @@
     }
 
     /* =========================================================
-       1. LIQUID GLASS EFFECT FOR LOCK CARDS
-       ========================================================= */
+        1. LIQUID GLASS EFFECT FOR LOCK CARDS
+        ========================================================= */
     .lock-card {
       position: relative;
       background: linear-gradient(
@@ -151,9 +151,9 @@
 
     .countdown-grid {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 12px;
-      max-width: 500px;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+      max-width: 580px;
       margin: 0 auto 25px auto;
     }
 
@@ -163,7 +163,7 @@
       border: 1px solid rgba(255, 255, 255, 0.25);
       border-top: 1px solid rgba(255, 255, 255, 0.4);
       border-radius: 20px;
-      padding: 15px 5px;
+      padding: 15px 2px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -172,16 +172,16 @@
     }
 
     .time-val {
-      font-size: 2rem;
+      font-size: 1.6rem;
       font-weight: 700;
       color: #ffeb3b;
       font-variant-numeric: tabular-nums;
     }
 
     .time-label {
-      font-size: 0.75rem;
+      font-size: 0.7rem;
       text-transform: uppercase;
-      letter-spacing: 1px;
+      letter-spacing: 0.5px;
       color: #94a3b8;
       margin-top: 4px;
     }
@@ -306,13 +306,13 @@
         font-size: 2.2rem;
       }
       .time-val {
-        font-size: 1.5rem;
+        font-size: 1.3rem;
       }
       .time-label {
-        font-size: 0.65rem;
+        font-size: 0.6rem;
       }
       .countdown-grid {
-        gap: 8px;
+        gap: 6px;
       }
     }
   </style>
@@ -347,6 +347,10 @@
           <div class="time-box">
             <span class="time-val" id="seconds">00</span>
             <span class="time-label">Giây</span>
+          </div>
+          <div class="time-box">
+            <span class="time-val" id="ms">000</span>
+            <span class="time-label">Mili Giây</span>
           </div>
         </div>
 
@@ -397,8 +401,8 @@
 
   <script>
     /* =========================================================
-       1. TIME LOCK & PREVIEW CHECK LOGIC
-       ========================================================= */
+        1. TIME LOCK & PREVIEW CHECK LOGIC
+        ========================================================= */
     function getTargetDate() {
       const now = new Date();
       let year = now.getFullYear();
@@ -472,11 +476,13 @@
       const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
       const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
       const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+      const milliseconds = Math.floor(distance % 1000);
 
       document.getElementById('days').innerText = String(days).padStart(2, '0');
       document.getElementById('hours').innerText = String(hours).padStart(2, '0');
       document.getElementById('minutes').innerText = String(minutes).padStart(2, '0');
       document.getElementById('seconds').innerText = String(seconds).padStart(2, '0');
+      document.getElementById('ms').innerText = String(milliseconds).padStart(3, '0');
 
       return false;
     }
@@ -494,12 +500,12 @@
         if (updateCountdown()) {
           clearInterval(timer);
         }
-      }, 1000);
+      }, 30); // Cập nhật liên tục để mili giây chạy mượt
     }
 
     /* =========================================================
-       2. CANVAS ANIMATION (Cánh hoa rơi / Pháo hoa)
-       ========================================================= */
+        2. CANVAS ANIMATION (Cánh hoa rơi / Pháo hoa)
+        ========================================================= */
     const canvas = document.getElementById('canvas-bg');
     const ctx = canvas.getContext('2d');
     let width, height;
