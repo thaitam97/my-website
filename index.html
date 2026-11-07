@@ -1,718 +1,1241 @@
 <!DOCTYPE html>
+
 <html lang="vi">
+
 <head>
+
   <meta charset="UTF-8">
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>Hộp Quà Bí Mật</title>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
+
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
   <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+
   <style>
+
     :root {
+
       --primary-color: #d63384;
+
       --secondary-color: #6f42c1;
+
       --accent-color: #ffc107;
+
       --bg-dark: #0f172a;
+
       --card-bg: rgba(255, 255, 255, 0.94);
+
       --text-color: #1e293b;
+
     }
+
+
 
     * {
+
       box-sizing: border-box;
+
       margin: 0;
+
       padding: 0;
+
     }
+
+
 
     body {
+
       font-family: 'Montserrat', sans-serif;
+
       min-height: 100vh;
+
       background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #31103f 100%);
+
       color: #fff;
+
       display: flex;
+
       justify-content: center;
+
       align-items: center;
+
       overflow-x: hidden;
+
       position: relative;
+
     }
+
+
 
     canvas#canvas-bg {
+
       position: fixed;
+
       top: 0;
+
       left: 0;
+
       width: 100%;
+
       height: 100%;
+
       pointer-events: none;
+
       z-index: 1;
+
     }
 
-    /* Nút Bật/Tắt Âm Thanh Tinh Tế */
-    .music-control-btn {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      z-index: 100;
-      background: rgba(255, 255, 255, 0.15);
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      color: #fff;
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      cursor: pointer;
-      font-size: 1.2rem;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-      transition: all 0.3s ease;
-    }
 
-    .music-control-btn:hover {
-      transform: scale(1.1);
-      background: rgba(255, 255, 255, 0.25);
-    }
 
     .container {
+
       width: 100%;
-      max-width: 900px;
+
+      max-width: 850px;
+
       padding: 20px;
+
       z-index: 2;
+
       position: relative;
+
     }
+
+
 
     /* Screen Transition */
+
     .screen {
+
       display: none;
+
       opacity: 0;
+
       transition: opacity 0.8s ease-in-out, transform 0.8s ease-in-out;
+
       transform: translateY(20px);
+
     }
+
+
 
     .screen.active {
+
       display: block;
+
       opacity: 1;
+
       transform: translateY(0);
+
     }
+
+
 
     /* =========================================================
-        1. LIQUID GLASS EFFECT FOR LOCK CARDS
-        ========================================================= */
+
+       1. LIQUID GLASS EFFECT FOR LOCK CARDS
+
+       ========================================================= */
+
     .lock-card {
+
       position: relative;
+
       background: linear-gradient(
+
         135deg,
+
         rgba(255, 255, 255, 0.18) 0%,
+
         rgba(255, 255, 255, 0.03) 40%,
+
         rgba(255, 255, 255, 0.08) 100%
+
       );
+
       backdrop-filter: blur(25px) saturate(180%);
+
       -webkit-backdrop-filter: blur(25px) saturate(180%);
+
       border: 1px solid rgba(255, 255, 255, 0.3);
+
       border-top: 1px solid rgba(255, 255, 255, 0.5);
+
       border-left: 1px solid rgba(255, 255, 255, 0.4);
+
       border-radius: 32px;
+
       padding: 40px 20px;
+
       text-align: center;
+
       box-shadow: 
+
         0 20px 40px rgba(0, 0, 0, 0.35),
+
         inset 0 1px 2px rgba(255, 255, 255, 0.3),
+
         inset 0 -2px 4px rgba(0, 0, 0, 0.2);
+
       overflow: hidden;
+
       transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease;
+
     }
+
+
 
     .lock-card::before {
+
       content: '';
+
       position: absolute;
+
       top: -50%;
+
       left: -50%;
+
       width: 200%;
+
       height: 200%;
+
       background: radial-gradient(
+
         circle at 30% 30%,
+
         rgba(255, 255, 255, 0.15) 0%,
+
         transparent 60%
+
       );
+
       pointer-events: none;
+
       z-index: 0;
+
     }
+
+
 
     .lock-card > * {
+
       position: relative;
+
       z-index: 1;
+
     }
+
+
 
     .lock-card:hover {
+
       transform: translateY(-3px) scale(1.005);
+
       box-shadow: 
+
         0 30px 60px rgba(0, 0, 0, 0.45),
+
         inset 0 1px 3px rgba(255, 255, 255, 0.4),
+
         inset 0 -2px 6px rgba(0, 0, 0, 0.25);
+
     }
+
+
 
     .gift-icon {
+
       font-size: 4rem;
+
       margin-bottom: 15px;
+
       animation: pulse 2s infinite ease-in-out;
+
     }
+
+
 
     @keyframes pulse {
+
       0%, 100% { transform: scale(1); }
+
       50% { transform: scale(1.15) rotate(5deg); }
+
     }
+
+
 
     .lock-title {
+
       font-size: 1.8rem;
+
       font-weight: 700;
+
       margin-bottom: 10px;
+
       background: linear-gradient(45deg, #ff758c, #ff7eb3, #ffc107);
+
       -webkit-background-clip: text;
+
       -webkit-text-fill-color: transparent;
+
     }
+
+
 
     .lock-subtitle {
+
       font-size: 0.95rem;
+
       color: #cbd5e1;
+
       margin-bottom: 30px;
+
     }
+
+
 
     .countdown-grid {
+
       display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 8px;
-      max-width: 580px;
+
+      grid-template-columns: repeat(4, 1fr);
+
+      gap: 12px;
+
+      max-width: 500px;
+
       margin: 0 auto 25px auto;
+
     }
+
+
 
     /* Liquid Glass style for Time Box */
+
     .time-box {
+
       background: linear-gradient(135deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.03));
+
       border: 1px solid rgba(255, 255, 255, 0.25);
+
       border-top: 1px solid rgba(255, 255, 255, 0.4);
+
       border-radius: 20px;
-      padding: 15px 2px;
+
+      padding: 15px 5px;
+
       display: flex;
+
       flex-direction: column;
+
       align-items: center;
+
       backdrop-filter: blur(10px);
+
       box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.2);
+
     }
+
+
 
     .time-val {
-      font-size: 1.6rem;
+
+      font-size: 2rem;
+
       font-weight: 700;
+
       color: #ffeb3b;
+
       font-variant-numeric: tabular-nums;
+
     }
+
+
 
     .time-label {
-      font-size: 0.7rem;
+
+      font-size: 0.75rem;
+
       text-transform: uppercase;
-      letter-spacing: 0.5px;
+
+      letter-spacing: 1px;
+
       color: #94a3b8;
+
       margin-top: 4px;
+
     }
+
+
 
     .preview-badge {
+
       display: inline-block;
+
       margin-top: 15px;
+
       padding: 6px 16px;
+
       background: rgba(255, 193, 7, 0.2);
+
       border: 1px solid #ffc107;
+
       color: #ffc107;
+
       border-radius: 20px;
+
       font-size: 0.8rem;
+
       font-weight: 600;
+
     }
+
+
 
     /* 2. Lock Click Interactive Screen */
+
     .padlock-container {
+
       text-align: center;
+
       cursor: pointer;
+
       user-select: none;
+
       padding: 30px 0;
+
     }
+
+
 
     .padlock-svg {
+
       width: 120px;
+
       height: 140px;
+
       margin: 0 auto 20px auto;
+
       filter: drop-shadow(0 0 20px rgba(255, 193, 7, 0.6));
+
       transition: transform 0.3s ease;
+
     }
+
+
 
     .padlock-container:hover .padlock-svg {
+
       transform: scale(1.08);
+
     }
+
+
 
     .shackle {
+
       transform-origin: 35px 45px;
+
       transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
     }
+
+
 
     .padlock-svg.unlocked .shackle {
+
       transform: translateY(-22px) rotate(-25deg);
+
     }
+
+
 
     .unlock-hint {
+
       font-size: 1.2rem;
+
       font-weight: 600;
+
       color: #ffeb3b;
+
       animation: bounce 1.5s infinite;
+
     }
+
+
 
     @keyframes bounce {
+
       0%, 100% { transform: translateY(0); }
+
       50% { transform: translateY(-8px); }
+
     }
+
+
 
     /* 3. Unlocked Main Content Styles */
+
     .unlocked-card {
+
       background: var(--card-bg);
+
       color: var(--text-color);
+
       border-radius: 28px;
+
       padding: 40px 30px;
+
       box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5);
+
       text-align: center;
+
       max-height: 90vh;
+
       overflow-y: auto;
+
     }
+
+
 
     .main-title {
+
       font-family: 'Dancing Script', cursive;
+
       font-size: 2.8rem;
+
       color: var(--primary-color);
+
       margin-bottom: 5px;
+
     }
+
+
 
     .sub-title {
+
       font-size: 1rem;
+
       color: #64748b;
+
       margin-bottom: 25px;
+
       font-weight: 500;
+
     }
+
+
 
     .letter-box {
+
       background: #fff5f8;
+
       border-left: 4px solid var(--primary-color);
+
       border-radius: 12px;
+
       padding: 25px 30px;
+
       text-align: left;
+
       line-height: 1.85;
+
       font-size: 1rem;
+
       color: #334155;
+
       box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.02);
+
     }
+
+
 
     .letter-box p {
+
       margin-bottom: 14px;
+
       text-align: justify;
+
     }
+
+
 
     .letter-box p.signature {
+
       margin-top: 20px;
+
       margin-bottom: 0;
+
       text-align: right;
+
       font-weight: 700;
+
       color: var(--secondary-color);
+
       font-size: 1.05rem;
+
     }
+
+
 
     /* Responsive Design */
+
     @media (max-width: 600px) {
+
       .container {
+
         padding: 12px;
+
       }
+
       .lock-card {
+
         padding: 30px 15px;
+
       }
+
       .unlocked-card {
+
         padding: 25px 15px;
+
       }
+
       .main-title {
+
         font-size: 2.2rem;
+
       }
+
       .time-val {
-        font-size: 1.3rem;
+
+        font-size: 1.5rem;
+
       }
+
       .time-label {
-        font-size: 0.6rem;
+
+        font-size: 0.65rem;
+
       }
+
       .countdown-grid {
-        gap: 6px;
+
+        gap: 8px;
+
       }
+
     }
+
   </style>
+
 </head>
+
 <body>
 
-  <!-- Audio Elements -->
-  <!-- Nhạc 1: Counting Stars (Piano/Orchestral Instrumental Cover) -->
-  <audio id="audio-lock" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8c8a72b8d.mp3?filename=counting-stars-piano-cover-10874.mp3" loop></audio>
-  
-  <!-- Nhạc 2: Phấn Trắng (Piano Tri Ân Thầy Cô Instrumental) -->
-  <audio id="audio-letter" src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=phan-trang-piano-instrumental-11254.mp3" loop></audio>
 
-  <!-- Nút điều khiển âm thanh -->
-  <button id="music-btn" class="music-control-btn" onclick="toggleAudio()">🔊</button>
 
   <!-- Animated Particles/Fireworks Canvas -->
+
   <canvas id="canvas-bg"></canvas>
 
+
+
   <div class="container">
+
     
+
     <!-- SCREEN 1: TIME LOCK COUNTDOWN -->
+
     <div id="lock-screen" class="screen active">
+
       <div class="lock-card">
+
         <div class="gift-icon">🎁</div>
+
         <h1 class="lock-title">Hộp Quà Bí Mật</h1>
+
         <p class="lock-subtitle">Một bất ngờ đang được khóa lại và sẽ tự động mở ra khi đếm ngược kết thúc!</p>
+
         
+
         <div class="countdown-grid">
+
           <div class="time-box">
+
             <span class="time-val" id="days">00</span>
+
             <span class="time-label">Ngày</span>
+
           </div>
+
           <div class="time-box">
+
             <span class="time-val" id="hours">00</span>
+
             <span class="time-label">Giờ</span>
+
           </div>
+
           <div class="time-box">
+
             <span class="time-val" id="minutes">00</span>
+
             <span class="time-label">Phút</span>
+
           </div>
+
           <div class="time-box">
+
             <span class="time-val" id="seconds">00</span>
+
             <span class="time-label">Giây</span>
+
           </div>
-          <div class="time-box">
-            <span class="time-val" id="ms">000</span>
-            <span class="time-label">Mili Giây</span>
-          </div>
+
         </div>
+
+
 
         <p style="font-size: 0.8rem; color: #cbd5e1;">Thời gian mở khóa bí mật</p>
+
         <div id="preview-tag" class="preview-badge" style="display: none;">Đang ở chế độ Xem Trước (#preview)</div>
+
       </div>
+
     </div>
+
+
 
     <!-- SCREEN 2: INTERACTIVE PADLOCK SCREEN -->
+
     <div id="padlock-screen" class="screen">
+
       <div class="lock-card">
+
         <div class="padlock-container" onclick="triggerUnlockAnimation()">
+
           <svg class="padlock-svg" id="padlock-icon" viewBox="0 0 100 120">
+
             <path class="shackle" d="M 30 55 V 35 A 20 20 0 0 1 70 35 V 55" fill="none" stroke="#ffc107" stroke-width="10" stroke-linecap="round"/>
+
             <rect x="15" y="50" width="70" height="60" rx="12" fill="url(#gold-grad)" stroke="#ffa000" stroke-width="3"/>
+
             <circle cx="50" cy="75" r="6" fill="#0f172a"/>
+
             <polygon points="46,75 54,75 52,90 48,90" fill="#0f172a"/>
+
             <defs>
+
               <linearGradient id="gold-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+
                 <stop offset="0%" stop-color="#ffe082" />
+
                 <stop offset="100%" stop-color="#ffb300" />
+
               </linearGradient>
+
             </defs>
+
           </svg>
+
           <div class="unlock-hint">✨ Đã tới giờ! Chạm vào ổ khóa để mở quà ✨</div>
+
         </div>
+
       </div>
+
     </div>
+
+
 
     <!-- SCREEN 3: UNLOCKED CONTENT -->
+
     <div id="unlocked-screen" class="screen">
+
       <div class="unlocked-card">
+
         <h1 class="main-title">Chúc Mừng Ngày Nhà Giáo Việt Nam</h1>
+
         <p class="sub-title">Tri ân Cô Nguyễn Thị Kim Yến - Người lái đò thầm lặng</p>
 
+
+
         <div class="letter-box">
+
           <p>Kính gửi Cô Nguyễn Thị Kim Yến kính yêu,</p>
+
           <p>Tháng mười một lại về mang theo những cơn gió se lạnh đầu đông và cũng là lúc triệu trái tim học trò hướng về ngày Nhà giáo Việt Nam 20/11 – ngày tôn vinh những người mang sứ mệnh gieo mầm tri thức cao quý. Nhân dịp đặc biệt này, chúng em xin được gửi đến Cô những tình cảm chân thành, lòng biết ơn sâu sắc và lời chúc mừng tốt đẹp nhất.</p>
+
           <p>Dưới mái trường thân yêu này, mỗi bài giảng của Cô không chỉ truyền tải lượng kiến thức khoa học bổ ích mà còn chứa đựng cả tâm huyết, sự kiên nhẫn và tình yêu thương bao la. Có những buổi học miệt mài, có những trăn trở lo lắng cho sự tiến bộ của học trò, Cô vẫn luôn ở đó, tận tụy dìu dắt chúng em từng bước vượt qua mọi khó khăn trên con đường chinh phục tri thức.</p>
+
           <p>Chúng em hiểu rằng, đằng sau sự nghiêm khắc đôi khi là mong muốn chúng em nên người, và đằng sau những lời động viên là cả một bầu trời sự quan tâm ấm áp. Cảm ơn Cô đã luôn là ngọn hải đăng soi đường, truyền cảm hứng mạnh mẽ để chúng em vững tin bước vào tương lai.</p>
+
           <p>Nhân ngày 20/11, chúng em kính chúc Cô luôn luôn dồi dào sức khỏe, tràn ngập niềm vui trong cuộc sống và giữ mãi ngọn lửa nhiệt huyết trên bục giảng. Chúc Cô luôn gặt hái được thật nhiều thành công hơn nữa trong sự nghiệp trồng người cao cả.</p>
+
           <p class="signature">— Tập thể học sinh kính tặng Cô —</p>
+
         </div>
+
       </div>
+
     </div>
+
+
 
   </div>
 
+
+
   <script>
-    /* =========================================================
-        AUDIO MANAGER LOGIC
-        ========================================================= */
-    const audioLock = document.getElementById('audio-lock');
-    const audioLetter = document.getElementById('audio-letter');
-    const musicBtn = document.getElementById('music-btn');
-    
-    let isMuted = false;
-    let currentStage = 'lock';
-
-    // Đặt âm lượng nhạc đếm ngược êm dịu chút
-    audioLock.volume = 0.6;
-    audioLetter.volume = 0.8;
-
-    function startLockMusic() {
-      if (!isMuted && audioLock.paused) {
-        audioLock.play().catch(() => {});
-      }
-    }
-
-    document.body.addEventListener('click', function initPlay() {
-      if (currentStage === 'lock') {
-        startLockMusic();
-      }
-    }, { once: true });
-
-    function switchMusicToLetter() {
-      currentStage = 'letter';
-      audioLock.pause();
-      audioLock.currentTime = 0;
-
-      if (!isMuted) {
-        audioLetter.play().catch(e => console.log(e));
-      }
-    }
-
-    function toggleAudio() {
-      isMuted = !isMuted;
-      if (isMuted) {
-        audioLock.pause();
-        audioLetter.pause();
-        musicBtn.innerText = '📁';
-      } else {
-        musicBtn.innerText = '🔊';
-        if (currentStage === 'lock') {
-          audioLock.play();
-        } else {
-          audioLetter.play();
-        }
-      }
-    }
 
     /* =========================================================
-        1. TIME LOCK & PREVIEW CHECK LOGIC
-        ========================================================= */
+
+       1. TIME LOCK & PREVIEW CHECK LOGIC
+
+       ========================================================= */
+
     function getTargetDate() {
+
       const now = new Date();
+
       let year = now.getFullYear();
-      let target = new Date(year, 10, 20, 0, 0, 0);
+
+      let target = new Date(year, 10, 20, 0, 0, 0); // Tháng 10 = Tháng 11 (0-indexed)
+
       
+
       if (now > target && now.getMonth() === 10 && now.getDate() > 20) {
+
         target = new Date(year + 1, 10, 20, 0, 0, 0);
+
       }
+
       return target;
+
     }
+
+
 
     const targetDate = getTargetDate();
 
+
+
     function isPreviewMode() {
+
       return window.location.hash.toLowerCase() === '#preview';
+
     }
 
+
+
     function showPadlockScreen() {
+
       const lockScreen = document.getElementById('lock-screen');
+
       const padlockScreen = document.getElementById('padlock-screen');
+
       
+
       if (lockScreen.classList.contains('active')) {
+
         lockScreen.classList.remove('active');
+
         setTimeout(() => {
+
           lockScreen.style.display = 'none';
+
           padlockScreen.style.display = 'block';
+
           setTimeout(() => padlockScreen.classList.add('active'), 50);
+
         }, 500);
+
       }
+
     }
+
+
 
     let isUnlocking = false;
 
+
+
     function triggerUnlockAnimation() {
+
       if (isUnlocking) return;
+
       isUnlocking = true;
 
-      switchMusicToLetter();
+
 
       const padlockIcon = document.getElementById('padlock-icon');
+
       const padlockScreen = document.getElementById('padlock-screen');
+
       const unlockedScreen = document.getElementById('unlocked-screen');
 
+
+
       padlockIcon.classList.add('unlocked');
+
       initFireworks();
 
+
+
       setTimeout(() => {
+
         padlockScreen.classList.remove('active');
+
         setTimeout(() => {
+
           padlockScreen.style.display = 'none';
+
           unlockedScreen.style.display = 'block';
+
           setTimeout(() => unlockedScreen.classList.add('active'), 50);
+
         }, 600);
+
       }, 700);
+
     }
+
+
 
     function updateCountdown() {
+
       if (isPreviewMode()) {
+
         document.getElementById('preview-tag').style.display = 'inline-block';
+
         showPadlockScreen();
+
         return true;
+
       }
+
+
 
       const now = new Date().getTime();
+
       const distance = targetDate.getTime() - now;
 
+
+
       if (distance <= 0) {
+
         showPadlockScreen();
+
         return true;
+
       }
+
+
 
       const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+
       const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+
       const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+
       const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-      const milliseconds = Math.floor(distance % 1000);
+
+
 
       document.getElementById('days').innerText = String(days).padStart(2, '0');
+
       document.getElementById('hours').innerText = String(hours).padStart(2, '0');
+
       document.getElementById('minutes').innerText = String(minutes).padStart(2, '0');
+
       document.getElementById('seconds').innerText = String(seconds).padStart(2, '0');
-      document.getElementById('ms').innerText = String(milliseconds).padStart(3, '0');
+
+
 
       return false;
+
     }
+
+
 
     window.addEventListener('hashchange', () => {
+
       if (isPreviewMode()) {
+
         showPadlockScreen();
+
       }
+
     });
 
+
+
     const isUnlocked = updateCountdown();
+
     let timer;
+
     if (!isUnlocked) {
+
       timer = setInterval(() => {
+
         if (updateCountdown()) {
+
           clearInterval(timer);
+
         }
-      }, 30);
+
+      }, 1000);
+
     }
+
+
 
     /* =========================================================
-        2. CANVAS ANIMATION (Cánh hoa rơi / Pháo hoa)
-        ========================================================= */
+
+       2. CANVAS ANIMATION (Cánh hoa rơi / Pháo hoa)
+
+       ========================================================= */
+
     const canvas = document.getElementById('canvas-bg');
+
     const ctx = canvas.getContext('2d');
+
     let width, height;
+
     let particles = [];
+
     let isFireworksMode = false;
 
+
+
     function resizeCanvas() {
+
       width = canvas.width = window.innerWidth;
+
       height = canvas.height = window.innerHeight;
+
     }
+
+
 
     window.addEventListener('resize', resizeCanvas);
+
     resizeCanvas();
 
+
+
     class Petal {
+
       constructor() {
+
         this.reset();
+
       }
+
       reset() {
+
         this.x = Math.random() * width;
+
         this.y = Math.random() * -height;
+
         this.size = Math.random() * 8 + 4;
+
         this.speedY = Math.random() * 1.5 + 0.8;
+
         this.speedX = Math.random() * 1 - 0.5;
+
         this.opacity = Math.random() * 0.7 + 0.3;
+
         this.color = Math.random() > 0.5 ? '#ffb7c5' : '#ffffff';
+
         this.rotation = Math.random() * 360;
+
         this.spin = Math.random() * 2 - 1;
+
       }
+
       update() {
+
         this.y += this.speedY;
+
         this.x += this.speedX;
+
         this.rotation += this.spin;
+
         if (this.y > height) this.reset();
+
       }
+
       draw() {
+
         ctx.save();
+
         ctx.translate(this.x, this.y);
+
         ctx.rotate((this.rotation * Math.PI) / 180);
+
         ctx.globalAlpha = this.opacity;
+
         ctx.fillStyle = this.color;
+
         ctx.beginPath();
+
         ctx.ellipse(0, 0, this.size, this.size / 2, 0, 0, Math.PI * 2);
+
         ctx.fill();
+
         ctx.restore();
+
       }
+
     }
+
+
 
     class FireworkParticle {
+
       constructor(x, y, color) {
+
         this.x = x;
+
         this.y = y;
+
         this.color = color;
+
         const angle = Math.random() * Math.PI * 2;
+
         const speed = Math.random() * 6 + 1;
+
         this.vx = Math.cos(angle) * speed;
+
         this.vy = Math.sin(angle) * speed;
+
         this.alpha = 1;
+
         this.decay = Math.random() * 0.02 + 0.01;
+
       }
+
       update() {
+
         this.vx *= 0.98;
+
         this.vy *= 0.98;
+
         this.vy += 0.05;
+
         this.x += this.vx;
+
         this.y += this.vy;
+
         this.alpha -= this.decay;
+
       }
+
       draw() {
+
         ctx.save();
+
         ctx.globalAlpha = this.alpha;
+
         ctx.fillStyle = this.color;
+
         ctx.beginPath();
+
         ctx.arc(this.x, this.y, 3, 0, Math.PI * 2);
+
         ctx.fill();
+
         ctx.restore();
+
       }
+
     }
+
+
 
     for (let i = 0; i < 40; i++) {
+
       particles.push(new Petal());
+
     }
+
+
 
     function createFireworkExplosion() {
+
       const x = Math.random() * width;
+
       const y = Math.random() * (height * 0.6);
+
       const colors = ['#ff4081', '#ffeb3b', '#00e676', '#00b0ff', '#e040fb'];
+
       const color = colors[Math.floor(Math.random() * colors.length)];
+
       for (let i = 0; i < 50; i++) {
+
         particles.push(new FireworkParticle(x, y, color));
+
       }
+
     }
+
+
 
     function initFireworks() {
+
       isFireworksMode = true;
+
       particles = [];
+
       setInterval(createFireworkExplosion, 800);
+
     }
+
+
 
     function animate() {
+
       ctx.clearRect(0, 0, width, height);
 
+
+
       for (let i = particles.length - 1; i >= 0; i--) {
+
         const p = particles[i];
+
         p.update();
+
         p.draw();
 
+
+
         if (isFireworksMode && p.alpha <= 0) {
+
           particles.splice(i, 1);
+
         }
+
       }
 
+
+
       requestAnimationFrame(animate);
+
     }
 
+
+
     animate();
+
   </script>
+
 </body>
+
 </html>
