@@ -67,19 +67,9 @@
       100% { transform: translate(50px, 40px) scale(1.2); }
     }
 
-    canvas#canvas-bg {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: 1;
-    }
-
     .container {
       width: 100%;
-      max-width: 900px;
+      max-width: 1050px;
       padding: 20px;
       z-index: 2;
       position: relative;
@@ -104,29 +94,22 @@
        ========================================================= */
     .lock-card {
       position: relative;
-      /* Nền kính siêu trong suốt kết hợp Gradient đa chiều */
       background: linear-gradient(
         135deg,
         rgba(255, 255, 255, 0.12) 0%,
         rgba(255, 255, 255, 0.01) 45%,
         rgba(255, 255, 255, 0.06) 100%
       );
-      /* Blur cực cao tạo hiệu ứng khúc xạ chất lỏng */
       backdrop-filter: blur(50px) saturate(240%);
       -webkit-backdrop-filter: blur(50px) saturate(240%);
-      
-      /* Đường viền khúc xạ ánh sáng 3D */
       border: 1px solid rgba(255, 255, 255, 0.15);
       border-top: 1.5px solid rgba(255, 255, 255, 0.75);
       border-left: 1.5px solid rgba(255, 255, 255, 0.55);
       border-bottom: 1px solid rgba(255, 255, 255, 0.1);
       border-right: 1px solid rgba(255, 255, 255, 0.2);
-      
       border-radius: 42px;
       padding: 50px 30px;
       text-align: center;
-      
-      /* Đổ bóng đa tầng tạo độ nổi trong không gian */
       box-shadow: 
         0 40px 100px rgba(0, 0, 0, 0.6),
         0 0 50px rgba(255, 255, 255, 0.08),
@@ -137,7 +120,6 @@
       transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.5s ease;
     }
 
-    /* Hiệu ứng Vệt Nước / Vệt Sáng Chạy Trôi Trên Bề Mặt Kính */
     .lock-card::before {
       content: '';
       position: absolute;
@@ -158,16 +140,6 @@
     .lock-card > * {
       position: relative;
       z-index: 1;
-    }
-
-    .lock-card:hover {
-      transform: translateY(-6px) scale(1.012);
-      box-shadow: 
-        0 50px 120px rgba(0, 0, 0, 0.7),
-        0 0 70px rgba(255, 117, 140, 0.3),
-        inset 0 2px 6px rgba(255, 255, 255, 0.9),
-        inset 0 -3px 10px rgba(0, 0, 0, 0.6),
-        inset 0 40px 80px rgba(255, 255, 255, 0.08);
     }
 
     .gift-icon {
@@ -202,7 +174,6 @@
       max-width: 550px;
       margin-left: auto;
       margin-right: auto;
-      font-weight: 400;
     }
 
     .countdown-grid {
@@ -213,13 +184,8 @@
       margin: 0 auto 30px auto;
     }
 
-    /* Ô Đếm Ngược Liquid Glass */
     .time-box {
-      background: linear-gradient(
-        135deg, 
-        rgba(255, 255, 255, 0.12) 0%, 
-        rgba(255, 255, 255, 0.01) 100%
-      );
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.01) 100%);
       border: 1px solid rgba(255, 255, 255, 0.15);
       border-top: 1.2px solid rgba(255, 255, 255, 0.65);
       border-left: 1.2px solid rgba(255, 255, 255, 0.45);
@@ -230,25 +196,7 @@
       align-items: center;
       backdrop-filter: blur(30px);
       -webkit-backdrop-filter: blur(30px);
-      box-shadow: 
-        0 15px 35px rgba(0, 0, 0, 0.25),
-        inset 0 1px 3px rgba(255, 255, 255, 0.5),
-        inset 0 -2px 4px rgba(0, 0, 0, 0.4);
-      transition: all 0.35s ease;
-    }
-
-    .time-box:hover {
-      transform: translateY(-5px);
-      background: linear-gradient(
-        135deg, 
-        rgba(255, 255, 255, 0.18) 0%, 
-        rgba(255, 255, 255, 0.04) 100%
-      );
-      border-color: rgba(255, 193, 7, 0.7);
-      box-shadow: 
-        0 20px 40px rgba(0, 0, 0, 0.35),
-        0 0 25px rgba(255, 193, 7, 0.3),
-        inset 0 1px 4px rgba(255, 255, 255, 0.7);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
     }
 
     .time-val {
@@ -257,8 +205,6 @@
       background: linear-gradient(180deg, #ffffff 0%, #ffecb3 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      font-variant-numeric: tabular-nums;
-      filter: drop-shadow(0 2px 10px rgba(255, 193, 7, 0.45));
     }
 
     .time-label {
@@ -280,11 +226,9 @@
       border-radius: 30px;
       font-size: 0.825rem;
       font-weight: 600;
-      letter-spacing: 0.5px;
-      box-shadow: 0 0 20px rgba(255, 193, 7, 0.25);
     }
 
-    /* 2. Lock Click Interactive Screen */
+    /* Padlock Screen */
     .padlock-container {
       text-align: center;
       cursor: pointer;
@@ -297,12 +241,11 @@
       height: 150px;
       margin: 0 auto 25px auto;
       filter: drop-shadow(0 0 35px rgba(255, 193, 7, 0.85));
-      transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.4s ease;
+      transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
 
     .padlock-container:hover .padlock-svg {
       transform: scale(1.12) rotate(-2deg);
-      filter: drop-shadow(0 0 50px rgba(255, 193, 7, 1));
     }
 
     .shackle {
@@ -318,7 +261,6 @@
       font-size: 1.25rem;
       font-weight: 700;
       color: #ffecb3;
-      text-shadow: 0 0 15px rgba(255, 236, 179, 0.6);
       animation: bounce 1.6s infinite ease-in-out;
     }
 
@@ -327,17 +269,16 @@
       50% { transform: translateY(-10px); }
     }
 
-    /* 3. Unlocked Main Content Styles */
+    /* =========================================================
+       UNLOCKED CONTENT & PHOTO MARQUEE LAYOUT
+       ========================================================= */
     .unlocked-card {
       background: var(--card-bg);
       color: var(--text-color);
       border-radius: 36px;
-      padding: 50px 40px;
-      box-shadow: 
-        0 30px 80px rgba(0, 0, 0, 0.6),
-        0 0 50px rgba(255, 51, 119, 0.2);
-      text-align: center;
-      max-height: 88vh;
+      padding: 40px;
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
+      max-height: 90vh;
       overflow-y: auto;
       border: 1px solid rgba(255, 255, 255, 0.8);
     }
@@ -352,82 +293,144 @@
 
     .main-title {
       font-family: 'Dancing Script', cursive;
-      font-size: 3.2rem;
+      font-size: 3rem;
       color: var(--primary-color);
-      margin-bottom: 8px;
-      text-shadow: 2px 2px 4px rgba(214, 51, 132, 0.15);
+      margin-bottom: 6px;
+      text-align: center;
     }
 
     .sub-title {
-      font-size: 1.05rem;
+      font-size: 1rem;
       color: #64748b;
-      margin-bottom: 30px;
+      margin-bottom: 25px;
       font-weight: 600;
-      letter-spacing: 0.2px;
+      text-align: center;
+    }
+
+    /* Layout chia 2 cột: Cột ảnh chạy bên trái + Bức thư bên phải */
+    .unlocked-content-layout {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    /* Hiệu ứng khung ảnh chạy vô tận (Marquee) */
+    .photo-marquee-container {
+      width: 100%;
+      height: 480px;
+      overflow: hidden;
+      position: relative;
+      border-radius: 20px;
+      background: rgba(255, 240, 245, 0.6);
+      border: 1px solid rgba(214, 51, 132, 0.2);
+      box-shadow: inset 0 4px 10px rgba(0,0,0,0.05);
+      mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
+      -webkit-mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
+    }
+
+    .marquee-track {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .marquee-column {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      padding: 12px;
+      animation: scrollUp 25s linear infinite;
+    }
+
+    .marquee-column img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 12px;
+      border: 2px solid #fff;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease;
+    }
+
+    /* Dừng lại khi rê chuột vào để cô ngắm kỹ ảnh */
+    .photo-marquee-container:hover .marquee-column {
+      animation-play-state: paused;
+    }
+
+    .marquee-column img:hover {
+      transform: scale(1.03);
+    }
+
+    @keyframes scrollUp {
+      0% {
+        transform: translateY(0);
+      }
+      100% {
+        transform: translateY(-50%);
+      }
     }
 
     .letter-box {
       background: linear-gradient(135deg, #fff7f9 0%, #fff 100%);
       border-left: 5px solid var(--primary-color);
       border-radius: 18px;
-      padding: 32px 36px;
+      padding: 28px 32px;
       text-align: left;
-      line-height: 1.9;
-      font-size: 1.05rem;
+      line-height: 1.8;
+      font-size: 1rem;
       color: #334155;
-      box-shadow: 
-        0 10px 25px rgba(0, 0, 0, 0.03),
-        inset 0 1px 0 rgba(255, 255, 255, 1);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.03);
     }
 
     .letter-box p {
-      margin-bottom: 16px;
+      margin-bottom: 14px;
       text-align: justify;
     }
 
     .letter-box p.signature {
-      margin-top: 24px;
+      margin-top: 20px;
       margin-bottom: 0;
       text-align: right;
       font-weight: 700;
       color: var(--secondary-color);
-      font-size: 1.1rem;
+      font-size: 1.05rem;
     }
 
-    /* Responsive Design */
-    @media (max-width: 600px) {
+    /* Responsive cho điện thoại */
+    @media (max-width: 768px) {
       .container {
         padding: 14px;
       }
       .lock-card {
         padding: 35px 16px;
-        border-radius: 30px;
       }
       .unlocked-card {
-        padding: 30px 20px;
-        border-radius: 28px;
+        padding: 24px 16px;
       }
       .lock-title {
         font-size: 1.8rem;
       }
       .main-title {
-        font-size: 2.4rem;
+        font-size: 2.2rem;
       }
-      .sub-title {
-        font-size: 0.95rem;
+      .unlocked-content-layout {
+        grid-template-columns: 1fr;
+      }
+      .photo-marquee-container {
+        height: 250px;
+      }
+      .marquee-column img {
+        height: 140px;
       }
       .time-val {
         font-size: 1.3rem;
-      }
-      .time-label {
-        font-size: 0.6rem;
       }
       .countdown-grid {
         gap: 8px;
       }
       .letter-box {
-        padding: 22px 20px;
-        font-size: 0.98rem;
+        padding: 20px 16px;
+        font-size: 0.95rem;
       }
     }
   </style>
@@ -437,9 +440,6 @@
   <!-- Dynamic Ambient Glow behind glass -->
   <div class="glass-glow-1"></div>
   <div class="glass-glow-2"></div>
-
-  <!-- Animated Particles/Fireworks Canvas -->
-  <canvas id="canvas-bg"></canvas>
 
   <div class="container">
     
@@ -499,19 +499,37 @@
       </div>
     </div>
 
-    <!-- SCREEN 3: UNLOCKED CONTENT -->
+    <!-- SCREEN 3: UNLOCKED CONTENT (WITH PHOTO MARQUEE & LETTER) -->
     <div id="unlocked-screen" class="screen">
       <div class="unlocked-card">
         <h1 class="main-title">Chúc Mừng Ngày Nhà Giáo Việt Nam</h1>
         <p class="sub-title">Tri ân Cô Nguyễn Thị Kim Yến - Người lái đò thầm lặng</p>
 
-        <div class="letter-box">
-          <p>Kính gửi Cô Nguyễn Thị Kim Yến kính yêu,</p>
-          <p>Tháng mười một lại về mang theo những cơn gió se lạnh đầu đông và cũng là lúc triệu trái tim học trò hướng về ngày Nhà giáo Việt Nam 20/11 – ngày tôn vinh những người mang sứ mệnh gieo mầm tri thức cao quý. Nhân dịp đặc biệt này, chúng em xin được gửi đến Cô những tình cảm chân thành, lòng biết ơn sâu sắc và lời chúc mừng tốt đẹp nhất.</p>
-          <p>Dưới mái trường thân yêu này, mỗi bài giảng của Cô không chỉ truyền tải lượng kiến thức khoa học bổ ích mà còn chứa đựng cả tâm huyết, sự kiên nhẫn và tình yêu thương bao la. Có những buổi học miệt mài, có những trăn trở lo lắng cho sự tiến bộ của học trò, Cô vẫn luôn ở đó, tận tụy dìu dắt chúng em từng bước vượt qua mọi khó khăn trên con đường chinh phục tri thức.</p>
-          <p>Chúng em hiểu rằng, đằng sau sự nghiêm khắc đôi khi là mong muốn chúng em nên người, và đằng sau những lời động viên là cả một bầu trời sự quan tâm ấm áp. Cảm ơn Cô đã luôn là ngọn hải đăng soi đường, truyền cảm hứng mạnh mẽ để chúng em vững tin bước vào tương lai.</p>
-          <p>Nhân ngày 20/11, chúng em kính chúc Cô luôn luôn dồi dào sức khỏe, tràn ngập niềm vui trong cuộc sống và giữ mãi ngọn lửa nhiệt huyết trên bục giảng. Chúc Cô luôn gặt hái được thật nhiều thành công hơn nữa trong sự nghiệp trồng người cao cả.</p>
-          <p class="signature">— Tập thể học sinh kính tặng Cô —</p>
+        <div class="unlocked-content-layout">
+          <!-- Cột ảnh kỷ niệm chạy tự động (Lấy từ thư mục images/anh1, anh2, anh3) -->
+          <div class="photo-marquee-container">
+            <div class="marquee-track">
+              <div class="marquee-column">
+                <img src="images/anh1.jpg" alt="Kỷ niệm 1">
+                <img src="images/anh2.jpg" alt="Kỷ niệm 2">
+                <img src="images/anh3.jpg" alt="Kỷ niệm 3">
+                <!-- Lặp lại để cuộn vô tận mượt mà -->
+                <img src="images/anh1.jpg" alt="Kỷ niệm 1">
+                <img src="images/anh2.jpg" alt="Kỷ niệm 2">
+                <img src="images/anh3.jpg" alt="Kỷ niệm 3">
+              </div>
+            </div>
+          </div>
+
+          <!-- Bức thư tâm tình -->
+          <div class="letter-box">
+            <p>Kính gửi Cô Nguyễn Thị Kim Yến kính yêu,</p>
+            <p>Tháng mười một lại về mang theo những cơn gió se lạnh đầu đông và cũng là lúc triệu trái tim học trò hướng về ngày Nhà giáo Việt Nam 20/11 – ngày tôn vinh những người mang sứ mệnh gieo mầm tri thức cao quý. Nhân dịp đặc biệt này, chúng em xin được gửi đến Cô những tình cảm chân thành, lòng biết ơn sâu sắc và lời chúc mừng tốt đẹp nhất.</p>
+            <p>Dưới mái trường thân yêu này, mỗi bài giảng của Cô không chỉ truyền tải lượng kiến thức khoa học bổ ích mà còn chứa đựng cả tâm huyết, sự kiên nhẫn và tình yêu thương bao la. Có những buổi học miệt mài, có những trăn trở lo lắng cho sự tiến bộ của học trò, Cô vẫn luôn ở đó, tận tụy dìu dắt chúng em từng bước vượt qua mọi khó khăn trên con đường chinh phục tri thức.</p>
+            <p>Chúng em hiểu rằng, đằng sau sự nghiêm khắc đôi khi là mong muốn chúng em nên người, và đằng sau những lời động viên là cả một bầu trời sự quan tâm ấm áp. Cảm ơn Cô đã luôn là ngọn hải đăng soi đường, truyền cảm hứng mạnh mẽ để chúng em vững tin bước vào tương lai.</p>
+            <p>Nhân ngày 20/11, chúng em kính chúc Cô luôn luôn dồi dào sức khỏe, tràn ngập niềm vui trong cuộc sống và giữ mãi ngọn lửa nhiệt huyết trên bục giảng. Chúc Cô luôn gặt hái được thật nhiều thành công hơn nữa trong sự nghiệp trồng người cao cả.</p>
+            <p class="signature">— Tập thể học sinh kính tặng Cô —</p>
+          </div>
         </div>
       </div>
     </div>
@@ -519,13 +537,10 @@
   </div>
 
   <script>
-    /* =========================================================
-       1. TIME LOCK & PREVIEW CHECK LOGIC
-       ========================================================= */
     function getTargetDate() {
       const now = new Date();
       let year = now.getFullYear();
-      let target = new Date(year, 10, 20, 0, 0, 0); // Tháng 10 = Tháng 11 (0-indexed)
+      let target = new Date(year, 10, 20, 0, 0, 0); // Tháng 10 = Tháng 11
       
       if (now > target && now.getMonth() === 10 && now.getDate() > 20) {
         target = new Date(year + 1, 10, 20, 0, 0, 0);
@@ -564,7 +579,6 @@
       const unlockedScreen = document.getElementById('unlocked-screen');
 
       padlockIcon.classList.add('unlocked');
-      initFireworks();
 
       setTimeout(() => {
         padlockScreen.classList.remove('active');
@@ -621,126 +635,6 @@
         }
       }, 31);
     }
-
-    /* =========================================================
-       2. CANVAS ANIMATION (Cánh hoa rơi / Pháo hoa)
-       ========================================================= */
-    const canvas = document.getElementById('canvas-bg');
-    const ctx = canvas.getContext('2d');
-    let width, height;
-    let particles = [];
-    let isFireworksMode = false;
-
-    function resizeCanvas() {
-      width = canvas.width = window.innerWidth;
-      height = canvas.height = window.innerHeight;
-    }
-
-    window.addEventListener('resize', resizeCanvas);
-    resizeCanvas();
-
-    class Petal {
-      constructor() {
-        this.reset();
-      }
-      reset() {
-        this.x = Math.random() * width;
-        this.y = Math.random() * -height;
-        this.size = Math.random() * 8 + 4;
-        this.speedY = Math.random() * 1.5 + 0.8;
-        this.speedX = Math.random() * 1 - 0.5;
-        this.opacity = Math.random() * 0.7 + 0.3;
-        this.color = Math.random() > 0.5 ? '#ffb7c5' : '#ffffff';
-        this.rotation = Math.random() * 360;
-        this.spin = Math.random() * 2 - 1;
-      }
-      update() {
-        this.y += this.speedY;
-        this.x += this.speedX;
-        this.rotation += this.spin;
-        if (this.y > height) this.reset();
-      }
-      draw() {
-        ctx.save();
-        ctx.translate(this.x, this.y);
-        ctx.rotate((this.rotation * Math.PI) / 180);
-        ctx.globalAlpha = this.opacity;
-        ctx.fillStyle = this.color;
-        ctx.beginPath();
-        ctx.ellipse(0, 0, this.size, this.size / 2, 0, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.restore();
-      }
-    }
-
-    class FireworkParticle {
-      constructor(x, y, color) {
-        this.x = x;
-        this.y = y;
-        this.color = color;
-        const angle = Math.random() * Math.PI * 2;
-        const speed = Math.random() * 6 + 1;
-        this.vx = Math.cos(angle) * speed;
-        this.vy = Math.sin(angle) * speed;
-        this.alpha = 1;
-        this.decay = Math.random() * 0.02 + 0.01;
-      }
-      update() {
-        this.vx *= 0.98;
-        this.vy *= 0.98;
-        this.vy += 0.05;
-        this.x += this.vx;
-        this.y += this.vy;
-        this.alpha -= this.decay;
-      }
-      draw() {
-        ctx.save();
-        ctx.globalAlpha = this.alpha;
-        ctx.fillStyle = this.color;
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, 3, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.restore();
-      }
-    }
-
-    for (let i = 0; i < 40; i++) {
-      particles.push(new Petal());
-    }
-
-    function createFireworkExplosion() {
-      const x = Math.random() * width;
-      const y = Math.random() * (height * 0.6);
-      const colors = ['#ff4081', '#ffeb3b', '#00e676', '#00b0ff', '#e040fb'];
-      const color = colors[Math.floor(Math.random() * colors.length)];
-      for (let i = 0; i < 50; i++) {
-        particles.push(new FireworkParticle(x, y, color));
-      }
-    }
-
-    function initFireworks() {
-      isFireworksMode = true;
-      particles = [];
-      setInterval(createFireworkExplosion, 800);
-    }
-
-    function animate() {
-      ctx.clearRect(0, 0, width, height);
-
-      for (let i = particles.length - 1; i >= 0; i--) {
-        const p = particles[i];
-        p.update();
-        p.draw();
-
-        if (isFireworksMode && p.alpha <= 0) {
-          particles.splice(i, 1);
-        }
-      }
-
-      requestAnimationFrame(animate);
-    }
-
-    animate();
   </script>
 </body>
 </html>
