@@ -204,9 +204,20 @@
     .time-val {
       font-size: 1.9rem;
       font-weight: 800;
-      background: linear-gradient(180deg, #ffffff 0%, #ffecb3 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      color: #ffffff;
+      animation: whiteToRedWave 2.8s infinite ease-in-out;
+      will-change: color, text-shadow;
+    }
+
+    @keyframes whiteToRedWave {
+      0%, 100% {
+        color: #ffffff;
+        text-shadow: 0 0 6px rgba(255, 255, 255, 0.25);
+      }
+      50% {
+        color: #ff2a4b;
+        text-shadow: 0 0 14px rgba(255, 42, 75, 0.75);
+      }
     }
 
     .time-label {
@@ -398,6 +409,29 @@
       font-size: 1.05rem;
     }
 
+    /* Hiệu ứng chữ "wave" xuất hiện từng chữ một trong bức thư */
+    .wave-word {
+      display: inline-block;
+      opacity: 0;
+      transform: translateY(10px);
+      animation: letterWaveIn 0.55s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    @keyframes letterWaveIn {
+      0% {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      55% {
+        opacity: 1;
+        transform: translateY(-4px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
     /* Responsive cho điện thoại */
     @media (max-width: 768px) {
       .container {
@@ -524,7 +558,7 @@
           </div>
 
           <!-- Bức thư tâm tình -->
-          <div class="letter-box">
+          <div class="letter-box" id="letter-box">
             <p>Kính gửi Cô Nguyễn Thị Kim Yến kính yêu,</p>
             <p>Tháng mười một lại về mang theo những cơn gió se lạnh đầu đông và cũng là lúc triệu trái tim học trò hướng về ngày Nhà giáo Việt Nam 20/11 – ngày tôn vinh những người mang sứ mệnh gieo mầm tri thức cao quý. Nhân dịp đặc biệt này, chúng em xin được gửi đến Cô những tình cảm chân thành, lòng biết ơn sâu sắc và lời chúc mừng tốt đẹp nhất.</p>
             <p>Dưới mái trường thân yêu này, mỗi bài giảng của Cô không chỉ truyền tải lượng kiến thức khoa học bổ ích mà còn chứa đựng cả tâm huyết, sự kiên nhẫn và tình yêu thương bao la. Có những buổi học miệt mài, có những trăn trở lo lắng cho sự tiến bộ của học trò, Cô vẫn luôn ở đó, tận tụy dìu dắt chúng em từng bước vượt qua mọi khó khăn trên con đường chinh phục tri thức.</p>
@@ -551,9 +585,42 @@
     }
 
     const targetDate = getTargetDate();
+    const MAX_BLINK_WINDOW = 30 * 24 * 60 * 60 * 1000; // 30 ngày
 
     function isPreviewMode() {
       return window.location.hash.toLowerCase() === '#preview';
+    }
+
+    let letterWavePlayed = false;
+
+    function prepareLetterWave() {
+      if (letterWavePlayed) return;
+      letterWavePlayed = true;
+
+      const letterBox = document.getElementById('letter-box');
+      if (!letterBox) return;
+
+      const paragraphs = letterBox.querySelectorAll('p');
+      let wordIndex = 0;
+
+      paragraphs.forEach((p) => {
+        const rawText = p.textContent.trim();
+        const words = rawText.split(/\s+/);
+        p.innerHTML = '';
+
+        words.forEach((word, idx) => {
+          const span = document.createElement('span');
+          span.className = 'wave-word';
+          span.textContent = word;
+          span.style.animationDelay = `${wordIndex * 0.045}s`;
+          p.appendChild(span);
+
+          if (idx < words.length - 1) {
+            p.appendChild(document.createTextNode(' '));
+          }
+          wordIndex++;
+        });
+      });
     }
 
     function showPadlockScreen() {
@@ -587,9 +654,24 @@
         setTimeout(() => {
           padlockScreen.style.display = 'none';
           unlockedScreen.style.display = 'block';
-          setTimeout(() => unlockedScreen.classList.add('active'), 50);
+          setTimeout(() => {
+            unlockedScreen.classList.add('active');
+            prepareLetterWave();
+          }, 50);
         }, 600);
       }, 700);
+    }
+
+    function updateRedBlinkSpeed(distance) {
+      const clamped = Math.max(0, Math.min(MAX_BLINK_WINDOW, distance));
+      const ratio = clamped / MAX_BLINK_WINDOW; // 1 (xa) -> 0 (gần hết giờ)
+      const minDuration = 0.55; // Nháy nhanh nhất khi sắp hết giờ (giây)
+      const maxDuration = 2.8;  // Nháy chậm hơn khi còn nhiều thời gian (giây)
+      const duration = (minDuration + (maxDuration - minDuration) * Math.pow(ratio, 0.7)).toFixed(3);
+
+      document.querySelectorAll('.time-val').forEach((el) => {
+        el.style.animationDuration = `${duration}s`;
+      });
     }
 
     function updateCountdown() {
@@ -601,6 +683,8 @@
 
       const now = new Date().getTime();
       const distance = targetDate.getTime() - now;
+
+      updateRedBlinkSpeed(distance);
 
       if (distance <= 0) {
         showPadlockScreen();
